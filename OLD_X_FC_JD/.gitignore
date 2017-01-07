@@ -1,0 +1,15 @@
+*.o
+*.d
+*.crf
+*.dep
+*.hex
+*.axf
+*.map
+*.htm
+OBJ/
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
