@@ -508,8 +508,8 @@ void nrf_task(void *pdata)
 		mode.hold_use_flow=0;		
 		mode.en_rth_mine=0;//KEY[7];
 		mode.en_qr_land=1;
-		en_yun_track=KEY_SEL[1];
-		mode.en_land_avoid=1;
+		en_yun_track=0;//KEY_SEL[1];
+		mode.en_land_avoid=KEY_SEL[1];
 		mode.land_by_pix=KEY_SEL[3];
 		#endif
 		

@@ -881,7 +881,7 @@ void AUTO_LAND_FLYUP(float T)
 		
 		case SU_TO_CHECK_POS://循航到检测目标位置 --巡航到降落GPS位置
 					 tar_need_to_check_odroid[2]=66;
-				 if(ALT_POS_SONAR2>MINE_LAND_HIGH-0.15&&fabs((int)Rc_Pwm_Inr_mine[RC_PITCH]-OFF_RC_PIT)<DEAD_NAV_RC&&fabs((int)Rc_Pwm_Inr_mine[RC_ROLL]-OFF_RC_ROL)<DEAD_NAV_RC){//跟踪到位
+				 if(fabs(ultra_ctrl.err)<250&&ALT_POS_SONAR2>MINE_LAND_HIGH-0.15&&fabs((int)Rc_Pwm_Inr_mine[RC_PITCH]-OFF_RC_PIT)<DEAD_NAV_RC&&fabs((int)Rc_Pwm_Inr_mine[RC_ROLL]-OFF_RC_ROL)<DEAD_NAV_RC){//跟踪到位
 					if(mode.en_gps){
 								if(fabs(nav_Data.gps_ero_dis_lpf[0])<GPS_ERO&&fabs(nav_Data.gps_ero_dis_lpf[1])<GPS_ERO&&(gpsx.gpssta>=1&&gpsx.rmc_mode=='A'))
 							{
@@ -927,7 +927,7 @@ void AUTO_LAND_FLYUP(float T)
 					#endif
 		  
     //	if(((tar_need_to_check_odroid[0]&&tar_need_to_check_odroid[1]!=66&&circle.connect)||force_check_pass)&&
-		if(fabs(ultra_ctrl.err<250)&&
+		if(fabs(ultra_ctrl.err)<250&&
 				fabs((int)Rc_Pwm_Inr_mine[RC_PITCH]-OFF_RC_PIT)<DEAD_NAV_RC&&fabs((int)Rc_Pwm_Inr_mine[RC_ROLL]-OFF_RC_ROL)<DEAD_NAV_RC){//跟踪到位
 				 if(ALT_POS_SONAR2>MINE_LAND_HIGH-0.15)
 					 {
@@ -1822,14 +1822,19 @@ u16 Heigh_thr=LIMIT(ultra_ctrl_out*0.4,-100,100)*k_m100[2]+OFF_RC_THR;
 			Rc_Pwm_Out_mine[RC_THR]=Rc_Pwm_Inr_mine[RC_THR];
 		break;
 		case SD_CIRCLE_MID_DOWN://land check
-			#if USE_M100
-		  if(ALT_POS_SONAR2>1.6)
-		  Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-100*0.4;
+		  if(ALT_POS_SONAR2>0.8){
+				 if(circle.check){
+						if(ALT_POS_SONAR2>1.6)
+						Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-100*0.4;
+						else
+						Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-100*0.3;	
+					}
+				 else
+					  Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR;
+		  }
 			else
-			Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-100*0.3;	
-		  #else
-			Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-60;
-		  #endif
+			Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-100*0.3;		
+			
 			if(mode.en_land_avoid&&(avoid_color[0]||avoid_color[1]||avoid_color[2]||avoid_color[3]))
 				Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR;
 		break;

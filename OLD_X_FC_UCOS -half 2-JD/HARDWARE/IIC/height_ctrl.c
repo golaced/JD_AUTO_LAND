@@ -383,7 +383,7 @@ else
 		
 	if(ultra_pid.ki==0||((Rc_Pwm_Inr_mine[RC_THR]<200+1000))||Rc_Pwm_Inr_mine[RC_THR]<450+1000||Rc_Pwm_Inr_mine[RC_THR]>550+1000||pwmin.sel==0)ultra_ctrl.err_i=0;
 
-	ultra_ctrl.err = ( ultra_pid.kp*LIMIT(my_deathzoom(exp_height - ultra_dis_lpf,5),-400,400) );
+	ultra_ctrl.err = ( ultra_pid.kp*LIMIT(my_deathzoom(exp_height - ultra_dis_lpf,25),-400,400) );
 
 	ultra_ctrl.err_i += ultra_pid.ki *ultra_ctrl.err *T;
 

@@ -744,7 +744,7 @@ void NRF_Send_RC_APP(void)//????
 	_temp = 	  state_v;
 	NRF24L01_TXDATA[_cnt++]=BYTE1(_temp);
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
-	_temp = 	  ultra_dis_lpf;
+	_temp = 	  m100.H*1000;
 	//_temp =ALT_POS_SONAR2*1000;
 	NRF24L01_TXDATA[_cnt++]=BYTE1(_temp);
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
@@ -769,7 +769,11 @@ void NRF_Send_RC_APP(void)//????
 	_temp = 	  yaw_use_gimbal_v;
 	NRF24L01_TXDATA[_cnt++]=BYTE1(_temp);
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
-
+	_temp = 	  avoid_color[0]||avoid_color[1]||avoid_color[2]||avoid_color[3];
+	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
+	_temp = 	  circle.check&&circle.connect;
+	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
+	
 	sum = 0;
 	for(i=0;i<31;i++)
 		sum += NRF24L01_TXDATA[i];
