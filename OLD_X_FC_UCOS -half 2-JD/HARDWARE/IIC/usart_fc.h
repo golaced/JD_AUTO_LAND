@@ -233,6 +233,7 @@ u8 en_sd_save;
 u8 hold_use_flow;
 u8 land_by_pix;
 u8 en_rth_mine;
+u8 qr_cal_by_px;
 u8 en_qr_land;
 u8 en_land_avoid;
 u8 en_sonar_avoid;

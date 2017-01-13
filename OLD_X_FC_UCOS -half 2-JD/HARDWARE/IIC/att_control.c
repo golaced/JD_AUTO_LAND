@@ -799,6 +799,7 @@ void AUTO_LAND_FLYUP(float T)
 	{//-------------------------------------------------起飞
 		case SG_LOW_CHECK://low thr check
 			mode.use_qr_as_gps_tar=get_qr_pos=fly_cover_cnt=cnt_shoot=over_time=cnt_back_home=0;tar_need_to_check_odroid[2]=66;
+			qr_pos_off[1]=qr_pos_off[0]=0;
 		  tar_cnt=0;
 		  for(i=0;i<19;i++)
 		    tar_buf[i]=66;
@@ -822,6 +823,7 @@ void AUTO_LAND_FLYUP(float T)
 						state=SU_HOLD;
 						#endif
 						cnt[0]=0;mode_change=1;thr_sel[1]=thr_sel[0]=cnt[0]=cnt[1]=0;
+					
 					if(gps_data.latitude!=0&&gps_data.longitude!=0&&gpsx.gpssta>=1&&gpsx.rmc_mode=='A'){
 					home_point[0]=gps_data.latitude;
 					home_point[1]=gps_data.longitude;
@@ -988,13 +990,14 @@ void AUTO_LAND_FLYUP(float T)
 					break; 		 
 				 
 		case SU_TO_START_POS://巡航到第一次看到qr的GPS位置8
-					 
+					 if(mode.qr_cal_by_px)
+						 mode.use_qr_as_gps_tar=1;
 				 if(ALT_POS_SONAR2>MINE_LAND_HIGH-0.15&&fabs((int)Rc_Pwm_Inr_mine[RC_PITCH]-OFF_RC_PIT)<DEAD_NAV_RC&&fabs((int)Rc_Pwm_Inr_mine[RC_ROLL]-OFF_RC_ROL)<DEAD_NAV_RC){//跟踪到位
 					if(mode.en_gps){//use now
 								if(((circle.check&&circle.connect)||//过程中看见
 									(mode.en_qr_land&&fabs(nav_Data.gps_ero_dis_lpf[0])<GPS_ERO&&fabs(nav_Data.gps_ero_dis_lpf[1])<GPS_ERO))&&(gpsx.gpssta>=1&&gpsx.rmc_mode=='A'))
 							{
-							 if(cnt[1]++>0.45/T)//开始下降
+							 if(cnt[1]++>0.45*2/T)//开始下降
 							 {state=SD_CIRCLE_MID_DOWN;m100_gps_in=cnt_circle_check=thr_sel[1]=thr_sel[2]=cnt[4]=cnt[1]=0;mode_change=1; gps_target_change=1;
 							 tar_now_gps[0]=tar_point_globle[0];
 							 tar_now_gps[1]=tar_point_globle[1];

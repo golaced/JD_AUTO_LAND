@@ -2022,6 +2022,7 @@ u8 avoid_color[4];
 	qr.pit=((int16_t)(*(data_buf+11)<<8)|*(data_buf+12));
 	qr.rol=((int16_t)(*(data_buf+13)<<8)|*(data_buf+14));
 	qr.yaw=Moving_Median(15,5,((int16_t)(*(data_buf+15)<<8)|*(data_buf+16)));
+	
 	if(circle.check){
 		int temp=((int16_t)(*(data_buf+17)<<8)|*(data_buf+18));
 		if(fabs(temp)<1000)
@@ -2037,6 +2038,8 @@ u8 avoid_color[4];
 	avoid_color[1]=*(data_buf+22);
 	avoid_color[2]=*(data_buf+23);
 	avoid_color[3]=*(data_buf+24);
+	qr.center_x=-((int16_t)(*(data_buf+25)<<8)|*(data_buf+26));	
+	qr.center_y=-((int16_t)(*(data_buf+27)<<8)|*(data_buf+28));
 	}
 }
  

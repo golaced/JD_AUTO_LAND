@@ -472,7 +472,7 @@ void nrf_task(void *pdata)
 		PWIN_CAL();
 		//------------0 1   |   2 3  KEY_SEL
 		
-		mode.dj_by_hand=!KEY_SEL[0];//手动控制云台
+		mode.dj_by_hand=0;//!KEY_SEL[0];//手动控制云台
 		mode.en_track_forward=1;//KEY_SEL[1];//使能侧飞
 		mode.en_pid_sb_set=KEY_SEL[2];//使能PID设置	
 		mode.test3=0;//前向壁障
@@ -511,6 +511,7 @@ void nrf_task(void *pdata)
 		en_yun_track=0;//KEY_SEL[1];
 		mode.en_land_avoid=KEY_SEL[1];
 		mode.land_by_pix=KEY_SEL[3];
+		mode.qr_cal_by_px=KEY_SEL[0];
 		#endif
 		
 		//EN_SHOOT(en_shoot||KEY[2]);

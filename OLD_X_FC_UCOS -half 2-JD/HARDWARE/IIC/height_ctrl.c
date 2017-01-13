@@ -30,9 +30,9 @@ _st_height_pid ultra_pid_safe,ultra_pid,ultra_pid_head;
 
 #define MAX_HEIGH_ERO 800  //check
 float exp_height_speed;
-float exp_height=3500,//起飞高度
-	    exp_height_check=3500,//下降检测的高度
-	   	exp_height_front=3500,//导航到第一次看到的高度
+float exp_height=4000,//起飞高度
+	    exp_height_check=6500,//下降检测的高度
+	   	exp_height_front=4000,//导航到第一次看到的高度
 			exp_height_back=3500,//not use,
 	exp_height_shoot_off;
 float exp_height_speed_safe,exp_height_safe;
@@ -374,9 +374,11 @@ else
 	//exp_height=ALT_POS_SONAR2*1000;
 	Flow_reset_pos();
 	}	
-	
+	u8 high_data_sel=0;//高度数据选择
 //	exp_height1=600; 
-	//ultra_dis_tmp=  ALT_POS_SONAR2*1000;//ultra_distance;
+	if(high_data_sel)
+	ultra_dis_tmp=  ALT_POS_SONAR2*1000;//ultra_distance;
+	else
 	ultra_dis_tmp=  LIMIT(m100.H-off_m100+sonar_ground,0,20)*1000;	
 
 	ultra_dis_lpf=  ultra_dis_tmp;
@@ -399,10 +401,13 @@ else
 	ultra_ctrl.pid_out = ultra_ctrl.err + ultra_ctrl.err_i + ultra_ctrl.err_d;
    }
   //if(S_head>20)
+	if(high_data_sel)
+	ultra_ctrl.pid_out = LIMIT(ultra_ctrl.pid_out,-1000,1000);	
+	else{
 	if(m100_data_refresh)
 	ultra_ctrl.pid_out = LIMIT(ultra_ctrl.pid_out,-1000,1000);
 	else
-	ultra_ctrl.pid_out=0;	
+	ultra_ctrl.pid_out=0;	}
 	ultra_ctrl_out = ultra_ctrl.pid_out;//控制输出
 	
 	ultra_ctrl.err_old = ultra_ctrl.err;

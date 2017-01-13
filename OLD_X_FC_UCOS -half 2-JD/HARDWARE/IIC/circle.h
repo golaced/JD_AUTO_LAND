@@ -5,22 +5,23 @@
 #include "gps.h"
  typedef struct
 {
- int x,y,z;
- float pit,rol,yaw;
- int r;
- int x_flp,y_flp,z_flp;
- u8 check;
- u8 connect,lose_cnt;
- int control[2];
- float control_k;
- float control_k_miss; 
-	float control_yaw;
- float forward;
- float forward_end_dj_pwm;
-	u8 dj_fly_line;
+int x,y,z,dis;
+int center_x,center_y;
+float pit,rol,yaw;
+int r;
+int x_flp,y_flp,z_flp;
+u8 check;
+u8 connect,lose_cnt;
+int control[2];
+float control_k;
+float control_k_miss; 
+float control_yaw;
+float forward;
+float forward_end_dj_pwm;
+u8 dj_fly_line;
 }CIRCLE;
 extern CIRCLE circle,track,mouse,qr;
-extern float nav_circle[2],nav_land[2];
+extern float nav_circle[2],nav_land[2],qr_pos_off[2];
 void circle_control(float T);
 #define MID_Y 125
 #define MID_X 140
@@ -52,7 +53,7 @@ extern M100 m100;
 #define East 1
 #define North 0
 extern double gps_local_cor_zero[2];//局部GPS坐标系原点
-extern float qr_local_pos[3],drone_local_pos[2];
+extern float qr_local_pos[3],drone_local_pos[2], qr_local_pos1[3];
 extern u8 get_qr_pos;
 extern float tar_drone_local_pos[2];
 extern _st_height_pid_v qr_ctrl[2];

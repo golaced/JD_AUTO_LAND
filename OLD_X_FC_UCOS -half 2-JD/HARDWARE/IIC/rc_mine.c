@@ -744,14 +744,14 @@ void NRF_Send_RC_APP(void)//????
 	_temp = 	  state_v;
 	NRF24L01_TXDATA[_cnt++]=BYTE1(_temp);
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
-	_temp = 	  m100.H*1000;
+	_temp = 	 ultra_dis_lpf;// m100.H*1000;
 	//_temp =ALT_POS_SONAR2*1000;
 	NRF24L01_TXDATA[_cnt++]=BYTE1(_temp);
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
-	_temp = 	  tar_drone_local_pos[1]*1000;
+	_temp = 	  qr_local_pos1[1]*1000;
 	NRF24L01_TXDATA[_cnt++]=BYTE1(_temp);
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
-	_temp = 	  tar_drone_local_pos[0]*1000;
+	_temp = 	  qr_local_pos1[0]*1000;
 	NRF24L01_TXDATA[_cnt++]=BYTE1(_temp);
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
 	_temp = 	  drone_local_pos[1]*1000;
@@ -769,7 +769,10 @@ void NRF_Send_RC_APP(void)//????
 	_temp = 	  yaw_use_gimbal_v;
 	NRF24L01_TXDATA[_cnt++]=BYTE1(_temp);
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
-	_temp = 	  avoid_color[0]||avoid_color[1]||avoid_color[2]||avoid_color[3];
+	if(avoid_color[0]||avoid_color[1]||avoid_color[2]||avoid_color[3])
+	_temp = 	  0;	
+	else
+	_temp = 	  1;
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
 	_temp = 	  circle.check&&circle.connect;
 	NRF24L01_TXDATA[_cnt++]=BYTE0(_temp);
