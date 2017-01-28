@@ -510,8 +510,8 @@ void nrf_task(void *pdata)
 		mode.en_qr_land=1;
 		en_yun_track=0;//KEY_SEL[1];
 		mode.en_land_avoid=KEY_SEL[1];
-		mode.land_by_pix=KEY_SEL[3];
-		mode.qr_cal_by_px=KEY_SEL[0];
+		mode.land_by_pix=1;//KEY_SEL[3];
+		mode.qr_cal_by_px=1;//KEY_SEL[0];
 		#endif
 		
 		//EN_SHOOT(en_shoot||KEY[2]);

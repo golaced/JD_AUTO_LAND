@@ -786,6 +786,7 @@ void AUTO_LAND_FLYUP(float T)
   static u32 cnt_back_home;
 	static u16 fly_cover_cnt;
 	static u8 cnt_first_avoid;
+	static u8 force_stop;
 	u16 i,j;
 	time_fly=cnt_back_home*T;
 	  u8 temp_pass=!force_check_pass;
@@ -798,7 +799,8 @@ void AUTO_LAND_FLYUP(float T)
 	switch(state)
 	{//-------------------------------------------------起飞
 		case SG_LOW_CHECK://low thr check
-			mode.use_qr_as_gps_tar=get_qr_pos=fly_cover_cnt=cnt_shoot=over_time=cnt_back_home=0;tar_need_to_check_odroid[2]=66;
+			force_stop=mode.use_qr_as_gps_tar=get_qr_pos=fly_cover_cnt=cnt_shoot=over_time=cnt_back_home=0;
+		  tar_need_to_check_odroid[2]=66;
 			qr_pos_off[1]=qr_pos_off[0]=0;
 		  tar_cnt=0;
 		  for(i=0;i<19;i++)
@@ -1298,9 +1300,14 @@ void AUTO_LAND_FLYUP(float T)
 				 if(pwmin.sel_in==0){if(cnt[3]++>1.5/T){mode_change=1;state=SD_SAFE;cnt[3]=0;}}
 		break; 		 
 	
-		case SD_CIRCLE_MID_DOWN://   在圆死区内中速下降  //下降并对二维码
+		case SD_CIRCLE_MID_DOWN://   //下降并对二维码
+		  	if(mode.en_land_avoid&&(avoid_color[0]||avoid_color[1]||avoid_color[2]||avoid_color[3]))
+				 force_stop=1;
 			
-			if(((int)Rc_Pwm_Inr_mine[RC_THR]>400+1000)&&((int)Rc_Pwm_Inr_mine[RC_THR]<600+1000)){
+				if(((int)Rc_Pwm_Inr_mine[RC_THR]>400+1000)&&((int)Rc_Pwm_Inr_mine[RC_THR]<600+1000)&&ALT_POS_SONAR2<3.5&&force_stop==1&&0){
+			   state=SD_SAFE;cnt_circle_check=thr_sel[1]=thr_sel[2]=cnt[4]=cnt[1]=cnt[2]=0;mode_change=1;
+				 }
+			   else if(((int)Rc_Pwm_Inr_mine[RC_THR]>400+1000)&&((int)Rc_Pwm_Inr_mine[RC_THR]<600+1000)){
 				 if(ALT_POS_SONAR2<SONAR_SET_HIGHT+0.25)//&&fabs(ALT_POS_BMP-bmp_r)<0.866)//Sonar check 0.5m
 				 {if(cnt[4]++>1/T)
 					{state=SD_CHECK_G;cnt_circle_check=thr_sel[1]=thr_sel[2]=cnt[4]=cnt[1]=cnt[2]=0;mode_change=1;}
@@ -1828,9 +1835,9 @@ u16 Heigh_thr=LIMIT(ultra_ctrl_out*0.4,-100,100)*k_m100[2]+OFF_RC_THR;
 		  if(ALT_POS_SONAR2>0.8){
 				 if(circle.check){
 						if(ALT_POS_SONAR2>1.6)
-						Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-100*0.4;
+						Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-100*0.5;
 						else
-						Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-100*0.3;	
+						Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR-100*0.4;	
 					}
 				 else
 					  Rc_Pwm_Out_mine[RC_THR]=OFF_RC_THR;

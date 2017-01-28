@@ -32,7 +32,7 @@ _st_height_pid ultra_pid_safe,ultra_pid,ultra_pid_head;
 float exp_height_speed;
 float exp_height=4000,//起飞高度
 	    exp_height_check=6500,//下降检测的高度
-	   	exp_height_front=4000,//导航到第一次看到的高度
+	   	exp_height_front=5000,//导航到第一次看到的高度
 			exp_height_back=3500,//not use,
 	exp_height_shoot_off;
 float exp_height_speed_safe,exp_height_safe;
